@@ -1,5 +1,5 @@
-inputEditTitle = document.querySelector('input#note-title')
-textAreaEditBody = document.querySelector('textarea#note-body')
+titleElement = document.querySelector('input#note-title')
+bodyElement = document.querySelector('textarea#note-body')
 
 const noteId = location.hash.substring(1)
 var notes = getLocalStorageNotes()
@@ -13,9 +13,23 @@ if (note === undefined) {
 }
 clearEmptyTitle(note.title, note.body)
 
-document.querySelector('button#save').addEventListener('click', function () {
-    note.title = inputEditTitle.value
-    note.body = textAreaEditBody.value
+//Event Listeners
+titleElement.addEventListener('input', function () {
+    note.title = titleElement.value
+    saveNotes(notes)
+})
+
+bodyElement.addEventListener('input', function () {
+    note.body = bodyElement.value
+    saveNotes(notes)
+})
+
+document.querySelector('button#go-home').addEventListener('click', function () {
+    location.assign('notes.html')
+})
+
+document.querySelector('button#remove-note').addEventListener('click',function () {
+    removeNoteById(note.id)
     saveNotes(notes)
     location.assign('notes.html')
 })

@@ -21,7 +21,12 @@ var getLocalStorageNotes = function() {
     }  
     }
 
-//remove a nota pelo seu id do array notes e do local Storage
+//atualiza o localStorage com o array de notes passado
+var saveNotes = function (notes) {
+    localStorage.removeItem('notes')
+    localStorage.setItem('notes',JSON.stringify(notes))
+}
+//remove a nota pelo seu id do array notes
 var removeNoteById = function (id) {
     //remove do array notes
     const noteIndex = notes.findIndex(function (note) {
@@ -30,10 +35,6 @@ var removeNoteById = function (id) {
     if (noteIndex>-1) {
         notes.splice(noteIndex,1) 
     }
-
-    //remove do localStorage
-    localStorage.removeItem('notes')
-    localStorage.setItem('notes',JSON.stringify(notes))
     
 }
 
@@ -64,6 +65,7 @@ var generateDomStructure = function (note) {
         //event Listeners
         rmButton.addEventListener('click', function () {
             removeNoteById(note.id)
+            saveNotes(notes)
             renderNotes(getLocalStorageNotes())
         })
     } 
@@ -79,13 +81,8 @@ var checkEmptyTitle = function (noteTitle) {
 //verifica se o titulo da nota é 'Unnamed note', caso for, no edit ele limpa os inputs
 var clearEmptyTitle = function(noteTitle,noteBody) {
     if (noteTitle!='Unnamed Note') {
-        inputEditTitle.value = noteTitle
-        textAreaEditBody.value = noteBody 
+        document.querySelector('input#note-title').value = noteTitle
+        document.querySelector('textarea#note-body').value = noteBody 
     }else{
-        textAreaEditBody.value = noteBody
+        document.querySelector('textarea#note-body').value = noteBody
     }}
-
-var saveNotes = function (notes) {
-    localStorage.removeItem('notes')
-    localStorage.setItem('notes',JSON.stringify(notes))
-}
